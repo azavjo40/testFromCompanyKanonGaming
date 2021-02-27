@@ -1,0 +1,9 @@
+{
+  "name": "azam",
+  "version": "1.0.0",
+  "main": "app.js",
+  "repository": "https://github.com/azavjo40/testFromCompanyKanonGaming.git",
+  "author": "Adam <pabek92@gmail.com>",
+  "license": "MIT",
+  "dependencies": {}
+}
