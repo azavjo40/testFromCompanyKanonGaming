@@ -2,31 +2,41 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import "../styles/country/country.css";
 function Question3() {
-  const [show, setShow] = useState(true);
+  const [filtrDatalist, setFiltrDatalist] = useState();
+  const [filtrCountry, setFiltrCountry] = useState();
   const items = useSelector((state) => state.country.items);
+
   const changeHandler = (e) => {
-    //   const item = items.map((item) => item);
-    //   const value = e.target.value.trim();
-    //   if (value != "") {
-    //     if (item.search(value) == -1) {
-    //       setShow(false);
-    //     } else {
-    //       setShow(true);
-    //     }
-    //   }
+    //Search filter
+    const country = e.target.value.trim().toLowerCase();
+    const filtercountry = items.filter((item) => {
+      return item.name.toLowerCase() === country;
+    });
+    //DataList filter
+    const filterDatalist = items.filter((item) => {
+      return item.name.toLowerCase() >= country;
+    });
+    setFiltrDatalist(filterDatalist);
+    setFiltrCountry(filtercountry);
   };
+
   return (
-    <div>
-      <input type="text" onInput={changeHandler} />
-      {items &&
-        items.map((item, i) => {
-          return (
-            <>
-              <h4 key={item.area || i} className={show ? "show" : "hide"}>
-                {item.name}
-              </h4>
-            </>
-          );
+    <div className="country">
+      <input
+        list="country"
+        type="text"
+        onInput={changeHandler}
+        placeholder="Search Country"
+      />
+      <datalist id="country">
+        {filtrDatalist &&
+          filtrDatalist.map((list) => {
+            return <option key={list.name} value={list.name} />;
+          })}
+      </datalist>
+      {filtrCountry &&
+        filtrCountry.map((item) => {
+          return <h4 key={item.name}>{item.name}</h4>;
         })}
     </div>
   );

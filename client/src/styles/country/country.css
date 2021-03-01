@@ -1,9 +1,23 @@
-.show {
-  display: block;
+.country {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
 }
-
-.hide {
-  display: none;
+.country h4 {
+  padding-top: 10px;
+}
+.country input {
+  width: 300px;
+  border-radius: 5px;
+  transition: 0.5s;
+  border: 0.5px solid yellowgreen;
+  padding: 10px;
+}
+.country input:hover {
+  border: 0.5px solid yellow;
+}
+.country input:focus {
+  outline: none;
 }
 
 /*# sourceMappingURL=country.css.map */
