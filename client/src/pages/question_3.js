@@ -36,7 +36,11 @@ function Question3() {
       </datalist>
       {filtrCountry &&
         filtrCountry.map((item) => {
-          return <h4 key={item.name}>{item.name}</h4>;
+          return (
+            <h4 key={item.name} style={{ marginTop: "80px" }}>
+              {item.name}
+            </h4>
+          );
         })}
     </div>
   );
