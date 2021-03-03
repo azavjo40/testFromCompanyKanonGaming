@@ -16,7 +16,7 @@ export function httpFetch(
         method: method,
         headers: { Authorization: token },
       };
-      if (method === "POST" && body) {
+      if ((method === "POST" && body) || (method === "PATCH" && body)) {
         requestOptions.body = JSON.stringify(body);
         requestOptions.headers = {
           "Content-Type": "application/json",
@@ -35,6 +35,7 @@ export function httpFetch(
       }
       dispach(showAlert(data.message));
       dispach(isLoading(false));
+      return { response, data };
     } catch (e) {
       dispach(showAlert("Something went wrong try again"));
     }

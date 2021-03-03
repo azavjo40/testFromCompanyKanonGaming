@@ -1,26 +1,10 @@
-import { isLoading } from "../general/generalActoins";
 import { ALLDATAGAMES } from "./types";
 import { httpFetch } from "../hooks/httpFetch";
+
 export const gamesPost = (form) => {
-  console.log(form);
-  const requestOptions = {
-    mode: "no-cors",
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: form,
-  };
   return async (dispatch) => {
     try {
-      // dispatch(isLoading(true));
-      // const response = await fetch(
-      //   "http://localhost:5000/api/games/user",
-      //   requestOptions
-      // );
-      // const data = await response.json();
-      // console.log(data);
-      // dispatch({ type: ALLDATAGAMES, payload: data });
-      // dispatch(isLoading(false));
-      await dispatch(
+      const { response, data } = await dispatch(
         httpFetch(
           "http://localhost:5000/api/games/user",
           "POST",
@@ -30,6 +14,31 @@ export const gamesPost = (form) => {
           ALLDATAGAMES
         )
       );
+      console.log("1", data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const gamesPatch = (dataStorage) => {
+  return async (dispatch) => {
+    console.log();
+    const storage = {
+      name: dataStorage.name,
+      _id: dataStorage.userId,
+      moneys: dataStorage.moneys,
+    };
+    console.log(storage);
+    try {
+      const { response, data } = await dispatch(
+        httpFetch("http://localhost:5000/api/games/patch", "PATCH", storage)
+      );
+      if (!response.ok) {
+        console.log("problem");
+      } else {
+        dispatch({ type: ALLDATAGAMES, payload: data });
+      }
     } catch (e) {
       console.log(e);
     }

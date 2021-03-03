@@ -1,14 +1,17 @@
-import { FRUITFRUITS, FRUITMONEYS, FRUITUSERID } from "./types";
+import { ALLDATAGAMES, FRUITFRUITS, FRUITMONEYS, FRUITUSERID } from "./types";
 
 //@ts-check
 const initialState = {
   moneys: null,
   fruits: null,
   userId: null,
+  allDataGames: null,
 };
 
 export const gamesReducer = (state = initialState, actoin) => {
   switch (actoin.type) {
+    case ALLDATAGAMES:
+      return { ...state, allDataGames: actoin.payload };
     case FRUITMONEYS:
       return { ...state, moneys: actoin.payload };
     case FRUITFRUITS:
