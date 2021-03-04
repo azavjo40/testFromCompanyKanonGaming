@@ -35,7 +35,16 @@ router.patch("/patch", removeUser, async (req, res) => {
       _id,
       fruits,
     };
-    if (!name) {
+    if (!_id) {
+      const user = new User({ name, moneys: moneysUser, fruits });
+      await user.save();
+      res.status(201).json({
+        message: "User created",
+        _id: user.id,
+        name,
+        moneys: moneysUser,
+        fruits,
+      });
       res.status(300).json({ message: "problem" });
     } else {
       const user = await User.findByIdAndUpdate(

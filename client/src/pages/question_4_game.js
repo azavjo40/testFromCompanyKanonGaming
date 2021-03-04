@@ -12,7 +12,7 @@ function QuestionGame() {
     setForm({ ...form, [e.target.name]: e.target.value, moneys: 20 });
   };
   const playing = () => {
-    dispatch(gamesPatch(data));
+    dispatch(gamesPatch(data, form));
   };
   const startPlay = () => {
     dispatch(gamesPost(form));
