@@ -6,7 +6,6 @@ import "../styles/fruits/fruits.css";
 function QuestionGame() {
   const [form, setForm] = useState({ name: "" });
   const dispatch = useDispatch();
-  const alert = useSelector((state) => state.general.alert);
   const data = useSelector((state) => state.games.allDataGames);
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value, moneys: 20 });
@@ -27,7 +26,6 @@ function QuestionGame() {
         onChange={changeHandler}
       />
       <div className="contGame">
-        {alert && <Alert text={alert} />}
         <button onClick={startPlay}>Start</button>
         <p onClick={playing}>{data && data.moneys} Playing</p>
         {data &&
