@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const User = require("../models/user");
 const fruitGames = require("../midlleware/fruitGames");
+const removeUser = require("../midlleware/removeUser");
 const router = Router();
 router.post("/user", async (req, res) => {
   try {
@@ -13,7 +14,7 @@ router.post("/user", async (req, res) => {
       await user.save();
       res.status(201).json({
         message: "User created",
-        userId: user.id,
+        _id: user.id,
         name,
         moneys: moneysUser,
         fruits,
@@ -24,26 +25,25 @@ router.post("/user", async (req, res) => {
   }
 });
 
-router.patch("/patch", async (req, res) => {
+router.patch("/patch", removeUser, async (req, res) => {
   try {
-    const { name, moneys, userId } = req.body;
+    const { name, moneys, _id } = req.body;
     const { fruits, moneysUser } = await fruitGames(moneys);
     const update = {
       name,
       moneys: moneysUser,
-      userId,
+      _id,
       fruits,
     };
     if (!name) {
       res.status(300).json({ message: "problem" });
     } else {
       const user = await User.findByIdAndUpdate(
-        { _id: userId },
+        { _id },
         { $set: update },
         { new: true }
       );
       res.status(200).json(user);
-      console.log(user);
     }
   } catch (e) {
     res.status(500).jsom({ message: "Something went wrong, please try again" });

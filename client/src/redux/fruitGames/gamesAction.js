@@ -1,10 +1,10 @@
 import { ALLDATAGAMES } from "./types";
 import { httpFetch } from "../hooks/httpFetch";
-
+import { playGames } from "../../midlleware/fruitGames";
 export const gamesPost = (form) => {
   return async (dispatch) => {
     try {
-      const { response, data } = await dispatch(
+      await dispatch(
         httpFetch(
           "http://localhost:5000/api/games/user",
           "POST",
@@ -14,7 +14,6 @@ export const gamesPost = (form) => {
           ALLDATAGAMES
         )
       );
-      console.log("1", data);
     } catch (e) {
       console.log(e);
     }
@@ -23,19 +22,23 @@ export const gamesPost = (form) => {
 
 export const gamesPatch = (dataStorage) => {
   return async (dispatch) => {
-    console.log();
     const storage = {
       name: dataStorage.name,
-      _id: dataStorage.userId,
+      _id: dataStorage._id,
       moneys: dataStorage.moneys,
     };
-    console.log(storage);
     try {
       const { response, data } = await dispatch(
         httpFetch("http://localhost:5000/api/games/patch", "PATCH", storage)
       );
-      if (!response.ok) {
-        console.log("problem");
+      if (!response) {
+        const { fruits, moneys, _id, name } = playGames({
+          moneys: storage.moneys,
+          _id: storage._id,
+          name: storage.name,
+        });
+        const dataOfline = { fruits, moneys, _id, name };
+        dispatch({ type: ALLDATAGAMES, payload: dataOfline });
       } else {
         dispatch({ type: ALLDATAGAMES, payload: data });
       }
