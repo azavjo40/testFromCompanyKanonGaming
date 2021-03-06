@@ -1,22 +1,25 @@
 import { ALLDATAGAMES } from "./types";
-import { httpFetch } from "../hooks/httpFetch";
 import { playGames } from "../../midlleware/fruitGames";
-
+import { isLoading } from "../general/generalActoins";
 export const gamesPost = (form) => {
   return async (dispatch) => {
+    let response;
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     };
     try {
-      const response = await fetch(
+      dispatch(isLoading(true));
+      response = await fetch(
         "http://localhost:5000/api/games/user",
         requestOptions
       );
       const data = await response.json();
       dispatch({ type: ALLDATAGAMES, payload: data });
-    } catch (e) {
+      dispatch(isLoading(false));
+    } catch (e) {}
+    if (response === undefined) {
       const dataForm = { moneys: form.moneys, _id: null, name: form.name };
       const { fruits, moneys, _id, name } = playGames(dataForm);
       const dataOfline = { fruits, moneys, _id, name };
@@ -27,17 +30,28 @@ export const gamesPost = (form) => {
 
 export const gamesPatch = (dataStorage) => {
   return async (dispatch) => {
+    let response;
     const storage = {
       moneys: dataStorage.moneys,
       _id: dataStorage._id,
       name: dataStorage.name,
     };
+    const requestOptions = {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(storage),
+    };
     try {
-      const { data } = await dispatch(
-        httpFetch("http://localhost:5000/api/games/patch", "PATCH", storage)
+      dispatch(isLoading(true));
+      response = await fetch(
+        "http://localhost:5000/api/games/patch",
+        requestOptions
       );
+      const data = await response.json();
       dispatch({ type: ALLDATAGAMES, payload: data });
-    } catch (e) {
+      dispatch(isLoading(false));
+    } catch (e) {}
+    if (response === undefined) {
       const { fruits, moneys, _id, name } = playGames(storage);
       const dataOfline = { fruits, moneys, _id, name };
       dispatch({ type: ALLDATAGAMES, payload: dataOfline });
