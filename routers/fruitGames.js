@@ -1,7 +1,8 @@
 const { Router } = require("express");
 const User = require("../models/user");
-const fruitGames = require("../midlleware/fruitGames");
-const removeUser = require("../midlleware/removeUser");
+const fruitGames = require("../middleware/fruitGames");
+const removeUser = require("../middleware/removeUser");
+const userRegister = require("../middleware/userRegister");
 const router = Router();
 router.post("/user", async (req, res) => {
   try {
@@ -10,15 +11,7 @@ router.post("/user", async (req, res) => {
     if (!name) {
       res.status(300).json({ message: "Please Choose Name and Money" });
     } else {
-      const user = new User({ name, moneys: moneysUser, fruits });
-      await user.save();
-      res.status(201).json({
-        message: "User created",
-        _id: user.id,
-        name,
-        moneys: moneysUser,
-        fruits,
-      });
+      userRegister({ res, name, moneys: moneysUser, fruits });
     }
   } catch (e) {
     res.status(500).jsom({ message: "Something went wrong, please try again" });
@@ -36,16 +29,7 @@ router.patch("/patch", removeUser, async (req, res) => {
       fruits,
     };
     if (!_id) {
-      const user = new User({ name, moneys: moneysUser, fruits });
-      await user.save();
-      res.status(201).json({
-        message: "User created",
-        _id: user.id,
-        name,
-        moneys: moneysUser,
-        fruits,
-      });
-      res.status(300).json({ message: "problem" });
+      userRegister({ res, name, moneys: moneysUser, fruits });
     } else {
       const user = await User.findByIdAndUpdate(
         { _id },

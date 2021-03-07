@@ -7,14 +7,18 @@ function Question3() {
   const items = useSelector((state) => state.country.items);
 
   const changeHandler = (e) => {
-    //Search filter
+    const filtercountry = [];
+    const filterDatalist = [];
+
     const country = e.target.value.trim().toLowerCase();
-    const filtercountry = items.filter((item) => {
-      return item.name.toLowerCase() === country;
-    });
-    //DataList filter
-    const filterDatalist = items.filter((item) => {
-      return item.name.toLowerCase() >= country;
+    items.filter((item) => {
+      if (item.name.toLowerCase() === country) {
+        filtercountry.push(item);
+      }
+      if (item.name.toLowerCase() >= country) {
+        filterDatalist.push(item);
+      }
+      return false;
     });
     setFiltrDatalist(filterDatalist);
     setFiltrCountry(filtercountry);

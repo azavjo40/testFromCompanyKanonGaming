@@ -1,4 +1,5 @@
 import React from "react";
+import { SliderFruits } from "./index";
 const FruitsCart = ({ data }) => {
   const changeFruis = () => {
     if (data) {
@@ -11,14 +12,7 @@ const FruitsCart = ({ data }) => {
   const fruits = changeFruis();
   return (
     <div className="fruitsCart">
-      {fruits &&
-        fruits.map((fruit, i) => {
-          return (
-            <div className="fruits" key={i}>
-              <img src={fruit} alt="fruit" />
-            </div>
-          );
-        })}
+      <SliderFruits fruits={fruits} />
     </div>
   );
 };
