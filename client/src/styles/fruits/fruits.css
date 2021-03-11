@@ -10,9 +10,11 @@
   height: 300px;
   overflow: hidden;
   z-index: 1;
+  transition: 1s;
 }
 .slideCont .sliders .slide {
   color: blanchedalmond;
+  transition: 1s;
 }
 .slideCont .sliders img {
   width: 100%;
@@ -65,19 +67,47 @@
 .playing .fruitsCart {
   display: flex;
 }
-.playing button {
+.playing .gameScore {
+  display: flex;
+  width: 400px;
+  justify-content: space-between;
+}
+.playing .gameScore p {
+  margin-top: 10px;
+  font-size: 20px;
+}
+.playing .gameScore button {
   width: 120px;
   height: 40px;
-  margin: 10px;
+  margin-top: 10px;
   border-radius: 5px;
   transition: 0.5s;
   border: 0.5px solid yellowgreen;
 }
-.playing button:hover {
+.playing .gameScore button:hover {
   border: 0.5px solid yellow;
 }
-.playing button:focus {
+.playing .gameScore button:focus {
   outline: none;
+}
+
+.fruits {
+  display: flex;
+  width: 400px;
+  height: 100px;
+  position: absolute;
+  z-index: 3;
+  top: 213px;
+  transition: 1s;
+}
+.fruits div {
+  transition: 1s;
+  border-left: 3px solid red;
+  border-right: 3px solid red;
+}
+.fruits img {
+  width: 94px;
+  height: 100px;
 }
 
 /*# sourceMappingURL=fruits.css.map */

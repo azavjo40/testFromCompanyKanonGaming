@@ -2,39 +2,53 @@ import React, { useState } from "react";
 import { SliderFruits } from "./index";
 import { useSelector, useDispatch } from "react-redux";
 import { gamesPatch, gamesPost } from "../redux/fruitGames/gamesAction";
+import { changeFruis } from "../middleware/changeFruis";
 import "../styles/fruits/fruits.css";
+
 const FruitsCart = () => {
   const [form, setForm] = useState({ name: "" });
   const [show, setShow] = useState(true);
+  const [showFru, setShowFru] = useState(true);
+  let [slide, setSlide] = useState(0);
+  let [slideOne, setSlideOne] = useState(0);
+  const [stopSlideTop, setStopSlideTop] = useState(false);
+  let time;
   const dispatch = useDispatch();
   const data = useSelector((state) => state.games.allDataGames);
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value, moneys: 20 });
   };
+
+  const slideTop = () => {
+    if (slide === 1200) setSlide((slide = 0));
+    else setSlide(slide + 100);
+    if (slideOne === 1200) setSlideOne((slideOne = 0));
+    else setSlideOne(slideOne + 200);
+  };
+
+  if (stopSlideTop) {
+    time = setTimeout(() => slideTop(), 700);
+  } else {
+    clearTimeout(time);
+  }
+
   const startPlay = () => {
     dispatch(gamesPost(form));
+    setShow(!show);
+    setStopSlideTop(true);
+    setShowFru(true);
+    setTimeout(() => setStopSlideTop(false), 3000);
+    setTimeout(() => setShowFru(false), 5000);
   };
 
   const playing = () => {
     dispatch(gamesPatch(data, form));
+    setStopSlideTop(true);
+    setShowFru(true);
+    setTimeout(() => setStopSlideTop(false), 3000);
+    setTimeout(() => setShowFru(false), 5000);
   };
-
-  const changeFruis = () => {
-    const randomFruits = [];
-    if (data) {
-      const fruits = data.fruits.map((f) => {
-        return [f.fruit, f.fruit, f.fruit, f.fruit];
-      });
-      const fruits1 = fruits.flat();
-      while (randomFruits.length < 16) {
-        let i = Math.floor(Math.random() * fruits1.length);
-        randomFruits.push(fruits1[i]);
-      }
-      return randomFruits;
-    }
-  };
-
-  const randomFruits = changeFruis();
+  const randomFruits = changeFruis(data);
   return (
     <div className="fruitsConst">
       {show ? (
@@ -46,33 +60,46 @@ const FruitsCart = () => {
             value={form.name}
             onChange={changeHandler}
           />
-          <button
-            onClick={() => {
-              startPlay();
-              setShow(!show);
-            }}
-          >
-            Start
-          </button>
+          <button onClick={startPlay}>Start</button>
         </div>
       ) : (
         <div className="playing">
-          {!show &&
-            data &&
-            data.fruits.map((fruit, i) => {
-              return (
-                <div className="fruits" key={i}>
-                  <img src={fruit.fruit} alt="fruit" />
-                </div>
-              );
-            })}
-          <div className="fruitsCart">
-            <SliderFruits fruits={randomFruits} />
-            <SliderFruits fruits={randomFruits} />
-            <SliderFruits fruits={randomFruits} />
-            <SliderFruits fruits={randomFruits} />
+          <div className="fruits">
+            <h1> </h1>
+            {!showFru &&
+              data &&
+              data.fruits.map((fruit, i) => {
+                return (
+                  <div key={i}>
+                    <img src={fruit.fruit} alt="fruit" />
+                  </div>
+                );
+              })}
+            <h1> </h1>
           </div>
-          <button onClick={playing}>{data && data.moneys} Playing</button>
+
+          <div className="fruitsCart">
+            <SliderFruits
+              fruits={randomFruits}
+              trans={`translateY(${-slide}px)`}
+            />
+            <SliderFruits
+              fruits={randomFruits}
+              trans={`translateY(${-slideOne}px)`}
+            />
+            <SliderFruits
+              fruits={randomFruits}
+              trans={`translateY(${-slide}px)`}
+            />
+            <SliderFruits
+              fruits={randomFruits}
+              trans={`translateY(${-slideOne}px)`}
+            />
+          </div>
+          <div className="gameScore">
+            <p>{data && data.moneys}</p>
+            <button onClick={playing}> Playing</button>
+          </div>
         </div>
       )}
     </div>
