@@ -9,28 +9,27 @@ const FruitsCart = () => {
   const [form, setForm] = useState({ name: "" });
   const [show, setShow] = useState(true);
   const [showFru, setShowFru] = useState(true);
-  let [slide, setSlide] = useState(0);
+  let [slideTwo, setSlideTwo] = useState(0);
   let [slideOne, setSlideOne] = useState(0);
   const [stopSlideTop, setStopSlideTop] = useState(false);
   let time;
+
   const dispatch = useDispatch();
   const data = useSelector((state) => state.games.allDataGames);
+
   const changeHandler = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value, moneys: 20 });
   };
 
   const slideTop = () => {
-    if (slide === 1200) setSlide((slide = 0));
-    else setSlide(slide + 100);
-    if (slideOne === 1200) setSlideOne((slideOne = 0));
-    else setSlideOne(slideOne + 200);
+    if (slideTwo === -1200) setSlideTwo(slideTwo + 100);
+    else setSlideTwo(slideTwo - 100);
+    if (slideOne === -1200) setSlideOne(slideOne + 200);
+    else setSlideOne(slideOne - 200);
   };
 
-  if (stopSlideTop) {
-    time = setTimeout(() => slideTop(), 700);
-  } else {
-    clearTimeout(time);
-  }
+  if (stopSlideTop) time = setTimeout(() => slideTop(), 700);
+  else clearTimeout(time);
 
   const startPlay = () => {
     dispatch(gamesPost(form));
@@ -48,6 +47,7 @@ const FruitsCart = () => {
     setTimeout(() => setStopSlideTop(false), 3000);
     setTimeout(() => setShowFru(false), 5000);
   };
+
   const randomFruits = changeFruis(data);
   return (
     <div className="fruitsConst">
@@ -81,19 +81,19 @@ const FruitsCart = () => {
           <div className="fruitsCart">
             <SliderFruits
               fruits={randomFruits}
-              trans={`translateY(${-slide}px)`}
+              trans={`translateY(${slideTwo}px)`}
             />
             <SliderFruits
               fruits={randomFruits}
-              trans={`translateY(${-slideOne}px)`}
+              trans={`translateY(${slideOne}px)`}
             />
             <SliderFruits
               fruits={randomFruits}
-              trans={`translateY(${-slide}px)`}
+              trans={`translateY(${slideTwo}px)`}
             />
             <SliderFruits
               fruits={randomFruits}
-              trans={`translateY(${-slideOne}px)`}
+              trans={`translateY(${slideOne}px)`}
             />
           </div>
           <div className="gameScore">
